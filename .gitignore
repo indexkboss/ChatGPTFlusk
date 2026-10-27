@@ -1,0 +1,6 @@
+.env
+chat.db
+__pycache__/
+node_modules/
+.venv/
+tailwindcss.exe

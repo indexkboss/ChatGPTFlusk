@@ -1,0 +1,12 @@
+[project]
+name = "flaskgpt"
+version = "0.1.0"
+requires-python = ">=3.10,<4"
+dependencies = ["flask>=3.0", "openai>=1.40", "python-dotenv>=1.0", "pandas>=2.2", "openpyxl>=3.1", "fpdf2>=2.8", "pypdf>=4.0"]
+
+[tool.poetry]
+package-mode = false
+
+[build-system]
+requires = ["poetry-core>=2.0.0"]
+build-backend = "poetry.core.masonry.api"

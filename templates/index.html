@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FlaskGPT — Assistant IA</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/style.css') }}">
+
+    <script defer src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+    <script defer src="{{ url_for('static', filename='dist/js/script.js') }}"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800">
+    <main class="mx-auto flex min-h-screen max-w-4xl flex-col px-4 py-8">
+        <header class="mb-6">
+            <h1 class="text-2xl font-bold tracking-tight">FlaskGPT</h1>
+            <p class="mt-1 text-sm text-slate-500">Votre assistant intelligent.</p>
+
+            <div class="mt-4 flex flex-wrap items-center gap-2 text-sm">
+                <button id="new-chat" type="button"
+                        class="rounded-lg bg-slate-800 px-3 py-2 text-white hover:bg-slate-900">
+                    + Nouvelle conversation
+                </button>
+
+                <select id="domain" aria-label="Domaine"
+                        class="rounded-lg border border-slate-300 bg-white px-3 py-2 disabled:opacity-60">
+                    {% for d in domains %}
+                    <option value="{{ d }}">{{ d|capitalize }}</option>
+                    {% endfor %}
+                </select>
+
+                <button id="summary" type="button"
+                        class="rounded-lg border border-slate-300 bg-white px-3 py-2 hover:bg-slate-100">
+                    Résumé PDF
+                </button>
+
+                <select id="export" aria-label="Exporter"
+                        class="rounded-lg border border-slate-300 bg-white px-3 py-2">
+                    <option value="">Exporter…</option>
+                    <option value="txt">TXT</option>
+                    <option value="json">JSON</option>
+                    <option value="pdf">PDF</option>
+                </select>
+
+                <label class="cursor-pointer rounded-lg border border-slate-300 bg-white px-3 py-2 hover:bg-slate-100">
+                    Analyser des données (CSV/XLSX)
+                    <input id="analyze" type="file" accept=".csv,.xlsx" class="hidden">
+                </label>
+            </div>
+            <details class="mt-3 rounded-lg border border-slate-200 bg-white p-3 text-sm" open>
+                <summary class="cursor-pointer font-medium">Sources</summary>
+                <div id="sources-list" class="mt-2 space-y-1"></div>
+                <div class="mt-3 flex flex-wrap items-center gap-3">
+                    <label class="cursor-pointer rounded-lg border border-slate-300 px-3 py-1 hover:bg-slate-100">
+                        + Ajouter (TXT, MD, PDF)
+                        <input id="source-file" type="file" accept=".txt,.md,.pdf" class="hidden">
+                    </label>
+                    <label>Extraits <input id="k" type="number" min="1" max="10" value="3"
+                        class="w-14 rounded border border-slate-300 px-1"></label>
+                    <label>Lignes max <input id="lines" type="number" min="1" max="20" value="5"
+                        class="w-14 rounded border border-slate-300 px-1"></label>
+                </div>
+            </details>
+            <p id="stats" class="mt-2 text-xs text-slate-500"></p>
+        </header>
+
+        <div id="chat-template" class="hidden mb-4 rounded-2xl border border-slate-200 odd:bg-slate-50 even:bg-white p-5 shadow-xs">
+            <div class="message leading-relaxed break-words"></div>
+        </div>
+
+        <div id="gpt-output" class="flex-1" aria-live="polite"></div>
+
+        <form id="prompt-form" class="sticky bottom-0 mt-6 flex gap-3 bg-slate-50 py-4">
+            <label for="prompt" class="sr-only">Votre message</label>
+            <input id="prompt" name="prompt" type="text" required placeholder="Posez votre question…"
+                   class="min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100">
+            <button type="submit"
+                    class="rounded-xl bg-indigo-600 px-5 py-3 font-medium text-white hover:bg-indigo-700 disabled:cursor-wait disabled:opacity-50">
+                Envoyer
+            </button>
+        </form>
+    </main>
+</body>
+</html>
